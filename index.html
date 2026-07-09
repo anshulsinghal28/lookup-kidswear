@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lookup! Kids Wear — Opening 23rd August</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16264A;
+    --navy-2:#0F1B38;
+    --pink:#E6396B;
+    --orange:#F5A524;
+    --green:#3C9A3A;
+    --sky:#2FB2E8;
+    --bg:#F5F6FA;
+    --card:#FFFFFF;
+    --line:#E7E9F1;
+    --text:#1B2340;
+    --muted:#767E97;
+    --price:#1B2340;
+    --deal:#CC1F3B;
+    --shadow: 0 4px 18px rgba(22,38,74,0.08);
+    --shadow-lg: 0 14px 34px rgba(22,38,74,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.brand{font-family:'Baloo 2', cursive;}
+  a{text-decoration:none; color:inherit;}
+  ul{list-style:none;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1240px; margin:0 auto; padding:0 20px;}
+
+  .announce{ background:var(--navy-2); color:#fff; text-align:center; font-size:.8rem; font-weight:600; padding:8px 10px; letter-spacing:.02em; }
+  .announce b{color:var(--orange);}
+
+  .navbar{ background:var(--navy); position:sticky; top:0; z-index:100; box-shadow:var(--shadow-lg); }
+  .nav-top{ display:flex; align-items:center; gap:24px; padding:14px 20px; max-width:1240px; margin:0 auto; }
+  .brand{ color:#fff; font-size:1.6rem; font-weight:800; white-space:nowrap; display:flex; align-items:center; gap:4px; }
+  .brand .dot{color:var(--orange);}
+  .brand small{ display:block; font-family:'Inter'; font-size:.6rem; font-weight:600; letter-spacing:.12em; color:#9FB0D6; text-transform:uppercase; }
+  .search-bar{ flex:1; max-width:560px; display:flex; align-items:center; background:#fff; border-radius:8px; overflow:hidden; }
+  .search-bar input{ flex:1; border:none; outline:none; padding:11px 14px; font-size:.9rem; font-family:inherit; }
+  .search-bar button{ background:var(--orange); color:var(--navy); padding:11px 16px; font-weight:700; font-size:1rem; }
+  .nav-actions{display:flex; align-items:center; gap:22px; margin-left:auto;}
+  .nav-icon-btn{ color:#fff; display:flex; flex-direction:column; align-items:center; gap:2px; font-size:.68rem; font-weight:600; position:relative; min-width:44px; }
+  .nav-icon-btn .glyph{font-size:1.25rem;}
+  .hamburger{display:none; color:#fff; font-size:1.4rem;}
+  .nav-bottom{ background:var(--navy-2); border-top:1px solid rgba(255,255,255,.08); }
+  .cat-links{ display:flex; gap:2px; max-width:1240px; margin:0 auto; padding:0 20px; overflow-x:auto; }
+  .cat-links button{ color:#D7DEF0; font-weight:600; font-size:.85rem; padding:12px 16px; white-space:nowrap; border-bottom:3px solid transparent; transition:.15s; }
+  .cat-links button:hover, .cat-links button.active{ color:#fff; border-bottom-color:var(--orange); background:rgba(255,255,255,.04); }
+
+  .hero-banner{ background:linear-gradient(120deg, var(--navy) 0%, #223a70 60%, var(--sky) 130%); color:#fff; padding:52px 0 46px; position:relative; overflow:hidden; }
+  .hero-banner::after{ content:""; position:absolute; right:-60px; top:-60px; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, rgba(245,165,36,.35), transparent 70%); }
+  .hero-flex{ display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; position:relative; z-index:1; }
+  .hero-copy{max-width:560px;}
+  .hero-eyebrow{ display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.28); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:6px 14px; border-radius:999px; margin-bottom:16px; }
+  .hero-copy h1{ font-size:clamp(1.9rem, 4.2vw, 3rem); line-height:1.1; margin-bottom:14px; }
+  .hero-copy h1 span{color:var(--orange);}
+  .hero-copy p{font-size:1rem; color:#D7DEF0; font-weight:500; margin-bottom:22px; max-width:460px;}
+  .hero-btns{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{ font-weight:700; font-size:.92rem; padding:13px 26px; border-radius:8px; display:inline-flex; align-items:center; gap:8px; transition:.15s; }
+  .btn.primary{background:var(--orange); color:var(--navy);}
+  .btn.primary:hover{filter:brightness(1.06); transform:translateY(-2px);}
+  .btn.outline{border:1.5px solid rgba(255,255,255,.5); color:#fff;}
+  .btn.outline:hover{background:rgba(255,255,255,.1);}
+
+  .deal-card{ background:#fff; color:var(--navy); border-radius:18px; padding:24px 26px; box-shadow:var(--shadow-lg); min-width:260px; text-align:center; }
+  .deal-card .flat{font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);}
+  .deal-card .datebig{font-family:'Baloo 2'; font-weight:800; font-size:2.4rem; color:var(--deal); line-height:1.1; margin:6px 0;}
+  .deal-card .sub{font-size:.72rem; color:var(--muted); font-weight:600; margin-bottom:10px;}
+  .countdown{display:flex; gap:8px; justify-content:center;}
+  .countdown .box{background:var(--bg); border-radius:8px; padding:8px 10px; min-width:48px;}
+  .countdown .box b{display:block; font-family:'Baloo 2'; font-size:1.2rem; color:var(--navy);}
+  .countdown .box span{font-size:.6rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
+
+  .trust-strip{ background:#fff; border-bottom:1px solid var(--line); }
+  .trust-flex{ display:flex; justify-content:space-between; padding:18px 0; flex-wrap:wrap; gap:16px; }
+  .trust-item{display:flex; align-items:center; gap:10px; font-size:.82rem; font-weight:700; color:var(--navy);}
+  .trust-item .g{font-size:1.3rem;}
+
+  section{padding:44px 0;}
+  .sec-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:22px; flex-wrap:wrap; gap:10px; }
+  .sec-head h2{font-size:1.5rem; font-weight:700; color:var(--navy);}
+  .sec-head p{color:var(--muted); font-size:.85rem; font-weight:500; margin-top:4px;}
+
+  .cat-circles{ display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
+  .cat-circle{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 10px; text-align:center; cursor:pointer; transition:.15s; box-shadow:var(--shadow); }
+  .cat-circle:hover{transform:translateY(-4px); border-color:var(--orange);}
+  .cat-circle .ic{ width:56px; height:56px; margin:0 auto 10px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; }
+  .cat-circle:nth-child(1) .ic{background:#FFEFD8;}
+  .cat-circle:nth-child(2) .ic{background:#FCE4EC;}
+  .cat-circle:nth-child(3) .ic{background:#E4F6E3;}
+  .cat-circle:nth-child(4) .ic{background:#E1F4FC;}
+  .cat-circle:nth-child(5) .ic{background:#EFE6FA;}
+  .cat-circle span{font-size:.82rem; font-weight:700; color:var(--navy);}
+
+  .product-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .product-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; position:relative; transition:.18s; display:flex; flex-direction:column; }
+  .product-card:hover{box-shadow:var(--shadow-lg); transform:translateY(-4px);}
+  .p-thumb{ aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; font-size:3.2rem; position:relative; background-size:cover; background-position:center; }
+  .p-badge{ position:absolute; top:10px; left:10px; background:var(--deal); color:#fff; font-size:.66rem; font-weight:800; padding:4px 9px; border-radius:5px; letter-spacing:.03em; }
+  .p-badge.soon{background:var(--navy);}
+  .p-body{padding:14px 14px 16px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .p-cat{font-size:.68rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
+  .p-name{font-size:.92rem; font-weight:700; color:var(--navy); line-height:1.3;}
+  .p-price{display:flex; align-items:baseline; gap:8px; margin-top:2px;}
+  .p-price .now{font-size:1.05rem; font-weight:800; color:var(--price);}
+  .p-price .mrp{font-size:.78rem; color:var(--muted); text-decoration:line-through;}
+  .p-price .pct{font-size:.78rem; color:var(--green); font-weight:700;}
+  .add-btn{ margin-top:8px; background:var(--navy); color:#fff; font-weight:700; font-size:.82rem; padding:10px; border-radius:8px; text-align:center; transition:.15s; }
+  .add-btn:hover{background:var(--pink);}
+  .add-btn.disabled{background:#E7E9F1; color:var(--muted); cursor:default;}
+  .add-btn.disabled:hover{background:#E7E9F1;}
+
+  .empty-note{ grid-column:1/-1; text-align:center; padding:50px 20px; background:#fff; border:1.5px dashed var(--line); border-radius:16px; color:var(--muted); }
+  .empty-note .big{font-size:2rem; margin-bottom:8px;}
+  .empty-note h3{color:var(--navy); font-size:1.1rem; margin-bottom:6px;}
+
+  .review-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .review-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px; }
+  .review-card .stars{color:var(--orange); font-size:.95rem; margin-bottom:10px;}
+  .review-card p{font-size:.88rem; color:var(--text); line-height:1.55; margin-bottom:14px;}
+  .review-who{display:flex; align-items:center; gap:10px;}
+  .review-who .av{ width:36px; height:36px; border-radius:50%; background:var(--sky); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.85rem; }
+  .review-who b{font-size:.85rem; display:block;}
+  .review-who span{font-size:.72rem; color:var(--muted);}
+
+  .store-info{ background:var(--navy); color:#fff; border-radius:20px; padding:36px; display:grid; grid-template-columns:1fr 1fr; gap:30px; }
+  .store-info h3{font-size:1.25rem; margin-bottom:14px;}
+  .store-info .row{display:flex; gap:12px; padding:9px 0; font-size:.88rem; font-weight:600; color:#D7DEF0; border-bottom:1px solid rgba(255,255,255,.08);}
+  .store-info .row:last-child{border-bottom:none;}
+  .store-info a{color:var(--orange);}
+  .store-info .btn{margin-top:14px;}
+
+  footer{background:var(--navy-2); color:#B9C2DD; padding:48px 0 0; font-size:.85rem;}
+  .foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:30px; padding-bottom:34px; border-bottom:1px solid rgba(255,255,255,.08); }
+  .foot-grid h4{color:#fff; font-size:.92rem; margin-bottom:14px; font-family:'Inter'; font-weight:700;}
+  .foot-grid li{margin-bottom:9px;}
+  .foot-grid li a:hover{color:#fff;}
+  .foot-brand{color:#fff; font-size:1.4rem; font-weight:800; margin-bottom:10px;}
+  .foot-social{display:flex; gap:10px; margin-top:14px;}
+  .foot-social a{ width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; }
+  .foot-bottom{ text-align:center; padding:18px 0; font-size:.78rem; color:#7C88AB; }
+
+  @media (max-width:960px){
+    .product-grid{grid-template-columns:repeat(3,1fr);}
+    .cat-circles{grid-template-columns:repeat(5,1fr);}
+    .foot-grid{grid-template-columns:1fr 1fr;}
+    .store-info{grid-template-columns:1fr;}
+  }
+  @media (max-width:720px){
+    .search-bar{order:3; max-width:100%; width:100%; margin-top:10px;}
+    .nav-top{flex-wrap:wrap;}
+    .hamburger{display:block;}
+    .product-grid{grid-template-columns:repeat(2,1fr);}
+    .cat-circles{grid-template-columns:repeat(3,1fr);}
+    .review-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:480px){ .cat-circles{grid-template-columns:repeat(2,1fr);} }
+</style>
+</head>
+<body>
+
+<div class="announce">Grand Opening — <b>23rd August</b> · Flat 20% OFF on All Collection · Sawai Madhopur's Newest Kids Store</div>
+
+<div class="navbar">
+  <div class="nav-top">
+    <a href="#top" class="brand">Lookup<span class="dot">!</span><small>Kids Wear</small></a>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for t-shirts, dresses, winterwear...">
+      <button aria-label="Search">🔍</button>
+    </div>
+    <div class="nav-actions">
+      <a class="nav-icon-btn" href="#visit"><span class="glyph">📍</span>Store</a>
+      <a class="nav-icon-btn" href="https://wa.me/918875761528" target="_blank" rel="noopener"><span class="glyph">💬</span>Enquire</a>
+    </div>
+    <button class="hamburger" aria-label="Menu">☰</button>
+  </div>
+  <div class="nav-bottom">
+    <div class="cat-links" id="catLinks">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="Boys">Boys Wear</button>
+      <button data-filter="Girls">Girls Wear</button>
+      <button data-filter="Infant">Infant Wear</button>
+      <button data-filter="Winter">Winter Wear</button>
+      <button data-filter="Party">Party Wear</button>
+    </div>
+  </div>
+</div>
+
+<div class="hero-banner" id="top">
+  <div class="wrap hero-flex">
+    <div class="hero-copy">
+      <span class="hero-eyebrow">⭐ Opening Soon · Sawai Madhopur</span>
+      <h1>Fashion for every mood, <span>style for every kid.</span></h1>
+      <p>We're getting the store ready for you. Premium quality, soft fabrics, and trendy affordable outfits for boys, girls and infants — doors open 23rd August.</p>
+      <div class="hero-btns">
+        <button class="btn primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Preview Collection</button>
+        <a class="btn outline" href="#visit">Store Location</a>
+      </div>
+    </div>
+    <div class="deal-card">
+      <div class="flat">Grand Opening</div>
+      <div class="datebig">23 Aug</div>
+      <div class="sub">Flat 20% off on all collection</div>
+      <div class="countdown" id="countdown">
+        <div class="box"><b id="cd-d">--</b><span>Days</span></div>
+        <div class="box"><b id="cd-h">--</b><span>Hrs</span></div>
+        <div class="box"><b id="cd-m">--</b><span>Min</span></div>
+        <div class="box"><b id="cd-s">--</b><span>Sec</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="trust-strip">
+  <div class="wrap trust-flex">
+    <div class="trust-item"><span class="g">🏅</span>Premium Quality</div>
+    <div class="trust-item"><span class="g">🧵</span>Soft & Comfort Fabrics</div>
+    <div class="trust-item"><span class="g">🏷️</span>Affordable Prices</div>
+    <div class="trust-item"><span class="g">😊</span>Kids Friendly Store</div>
+    <div class="trust-item"><span class="g">👚</span>Wide Range</div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><div><h2>Shop by Category</h2><p>Everything your little one needs, sorted just for you.</p></div></div>
+    <div class="cat-circles">
+      <div class="cat-circle" onclick="filterProducts('Boys')"><div class="ic">👕</div><span>Boys Wear</span></div>
+      <div class="cat-circle" onclick="filterProducts('Girls')"><div class="ic">👗</div><span>Girls Wear</span></div>
+      <div class="cat-circle" onclick="filterProducts('Infant')"><div class="ic">🍼</div><span>Infant (0-2y)</span></div>
+      <div class="cat-circle" onclick="filterProducts('Winter')"><div class="ic">🧥</div><span>Winter Wear</span></div>
+      <div class="cat-circle" onclick="filterProducts('Party')"><div class="ic">🎉</div><span>Party Wear</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2 id="shopTitle">Coming Soon</h2>
+        <p>Products will appear here as soon as they're added to <code>products.json</code>.</p>
+      </div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><div><h2>Loved by Parents</h2><p>What families in Sawai Madhopur are saying.</p></div></div>
+    <div class="review-grid">
+      <div class="review-card"><div class="stars">★★★★★</div><p>Great collection for both my kids and the fabric quality is genuinely soft. Prices are very reasonable too.</p><div class="review-who"><div class="av">R</div><div><b>Riya M.</b><span>Verified Customer</span></div></div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Found the cutest party dress for my daughter's birthday. Staff was super helpful in picking the right size.</p><div class="review-who"><div class="av">A</div><div><b>Anita S.</b><span>Verified Customer</span></div></div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>Nice range of winter wear, good quality jackets at fair prices. Will definitely be back for more.</p><div class="review-who"><div class="av">V</div><div><b>Vikram J.</b><span>Verified Customer</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="wrap">
+    <div class="store-info">
+      <div>
+        <h3>📍 Visit our store</h3>
+        <div class="row">Lookup! Kids Wear, Shop No. G–40, City Centre Mall, Nearby Railway Station, Sawai Madhopur, Rajasthan – 322001</div>
+        <div class="row">🕘 Opens 23rd August · Everyday 10:00 AM – 9:30 PM</div>
+        <a class="btn primary" href="https://www.google.com/maps/search/?api=1&query=City+Centre+Mall+Sawai+Madhopur+Rajasthan+322001" target="_blank" rel="noopener">Get Directions</a>
+      </div>
+      <div>
+        <h3>💬 Get in touch</h3>
+        <div class="row">📞 <a href="tel:+918875761528">88875 76528</a></div>
+        <div class="row">📞 <a href="tel:+918619975721">86199 75721</a></div>
+        <div class="row">📸 <a href="https://instagram.com/lookup_kidswear" target="_blank" rel="noopener">@lookup_kidswear</a></div>
+        <div class="row">📘 <a href="#">Lookup Kids Wear</a></div>
+        <a class="btn outline" href="https://wa.me/918875761528" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="foot-brand">Lookup! Kids Wear</div>
+      <p>Fashion for every mood, style for every kid. Sawai Madhopur's newest destination for boys, girls, infant, winter and party wear. Opening 23rd August.</p>
+      <div class="foot-social">
+        <a href="https://instagram.com/lookup_kidswear" target="_blank" rel="noopener">📸</a>
+        <a href="#">📘</a>
+        <a href="https://wa.me/918875761528" target="_blank" rel="noopener">💬</a>
+      </div>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#" onclick="filterProducts('Boys');return false;">Boys Wear</a></li>
+        <li><a href="#" onclick="filterProducts('Girls');return false;">Girls Wear</a></li>
+        <li><a href="#" onclick="filterProducts('Infant');return false;">Infant Wear</a></li>
+        <li><a href="#" onclick="filterProducts('Winter');return false;">Winter Wear</a></li>
+        <li><a href="#" onclick="filterProducts('Party');return false;">Party Wear</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Customer Care</h4>
+      <ul>
+        <li><a href="#visit">Store Location</a></li>
+        <li><a href="tel:+918875761528">Call Us</a></li>
+        <li><a href="https://wa.me/918875761528">WhatsApp Support</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Store Info</h4>
+      <ul>
+        <li>Shop No. G–40, City Centre Mall</li>
+        <li>Sawai Madhopur, Rajasthan – 322001</li>
+        <li>Opens 23rd August</li>
+        <li>10:00 AM – 9:30 PM Daily</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">© 2026 Lookup! Kids Wear. All rights reserved. · Made with 💛 for Sawai Madhopur</div>
+</footer>
+
+<script>
+  const CATEGORY_ICON = { Boys:"👕", Girls:"👗", Infant:"🍼", Winter:"🧥", Party:"🎉" };
+  const grid = document.getElementById('productGrid');
+  const title = document.getElementById('shopTitle');
+  let allProducts = [];
+
+  async function loadProducts(){
+    try{
+      const res = await fetch('products.json', {cache:"no-store"});
+      allProducts = await res.json();
+    }catch(e){
+      allProducts = [];
+    }
+    renderProducts('all');
+  }
+
+  function renderProducts(filter){
+    grid.innerHTML = "";
+    const list = filter === "all" ? allProducts : allProducts.filter(p => p.category === filter);
+
+    if(list.length === 0){
+      grid.innerHTML = `
+        <div class="empty-note">
+          <div class="big">🧵</div>
+          <h3>${filter === "all" ? "Products coming soon" : filter + " Wear coming soon"}</h3>
+          <p>We're stocking the shelves for our 23rd August opening. Check back soon, or follow @lookup_kidswear for updates.</p>
+        </div>`;
+      return;
+    }
+
+    list.forEach((p) => {
+      const hasPrice = p.price !== undefined && p.price !== null && p.price !== "";
+      const discount = (hasPrice && p.mrp) ? Math.round((1 - p.price/p.mrp) * 100) : null;
+      const bg = p.image ? `background-image:url('${p.image}')` : `background:#FFEFD8`;
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="p-thumb" style="${bg}">
+          ${!hasPrice ? `<span class="p-badge soon">COMING SOON</span>` : (p.badge ? `<span class="p-badge">${p.badge}</span>` : "")}
+          ${!p.image ? (CATEGORY_ICON[p.category] || "👶") : ""}
+        </div>
+        <div class="p-body">
+          <span class="p-cat">${p.category || ""} Wear</span>
+          <span class="p-name">${p.name || "Untitled product"}</span>
+          <div class="p-price">
+            ${hasPrice ? `<span class="now">₹${p.price}</span>` : `<span class="now" style="color:var(--muted)">Price coming soon</span>`}
+            ${hasPrice && p.mrp ? `<span class="mrp">₹${p.mrp}</span><span class="pct">${discount}% off</span>` : ""}
+          </div>
+          <button class="add-btn ${hasPrice ? "" : "disabled"}">${hasPrice ? "Add to Cart" : "Notify Me"}</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function filterProducts(cat){
+    renderProducts(cat);
+    title.textContent = cat === "all" ? "Coming Soon" : cat + " Wear";
+    document.querySelectorAll('#catLinks button').forEach(b => b.classList.remove('active'));
+    document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+  }
+
+  document.querySelectorAll('#catLinks button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#catLinks button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterProducts(btn.dataset.filter);
+    });
+  });
+
+  function getOpeningDate(){
+    const now = new Date();
+    let year = now.getFullYear();
+    let target = new Date(year, 7, 23, 10, 0, 0);
+    if(target < now) target = new Date(year + 1, 7, 23, 10, 0, 0);
+    return target;
+  }
+  function updateCountdown(){
+    const diff = Math.max(0, getOpeningDate() - new Date());
+    const d = Math.floor(diff/86400000);
+    const h = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+    document.getElementById('cd-d').textContent = d;
+    document.getElementById('cd-h').textContent = h;
+    document.getElementById('cd-m').textContent = m;
+    document.getElementById('cd-s').textContent = s;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  loadProducts();
+</script>
+
+</body>
+</html>

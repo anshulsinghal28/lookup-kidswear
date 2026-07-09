@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lookup! Kids Wear — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --navy:#16264A; --navy-2:#0F1B38; --pink:#E6396B; --orange:#F5A524;
+    --green:#3C9A3A; --sky:#2FB2E8; --bg:#F5F6FA; --card:#FFFFFF;
+    --line:#E7E9F1; --text:#1B2340; --muted:#767E97; --danger:#CC1F3B;
+    --shadow: 0 4px 18px rgba(22,38,74,0.08); --shadow-lg: 0 14px 34px rgba(22,38,74,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:'Inter',sans-serif;}
+  h1,h2,.brand{font-family:'Baloo 2', cursive;}
+  button, input, select{font-family:inherit;}
+  .wrap{max-width:1080px; margin:0 auto; padding:24px 20px 60px;}
+
+  /* top bar */
+  .topbar{ background:var(--navy); color:#fff; padding:16px 0; }
+  .topbar .in{ max-width:1080px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ font-size:1.3rem; font-weight:800; display:flex; align-items:center; gap:6px; }
+  .brand .dot{color:var(--orange);}
+  .brand small{ display:block; font-family:'Inter'; font-size:.6rem; letter-spacing:.1em; color:#9FB0D6; text-transform:uppercase; font-weight:700; }
+  .logout-btn{ background:rgba(255,255,255,.12); color:#fff; padding:8px 16px; border-radius:8px; font-weight:700; font-size:.82rem; cursor:pointer; border:1px solid rgba(255,255,255,.2); }
+  .logout-btn:hover{background:rgba(255,255,255,.2);}
+
+  /* login screen */
+  .login-screen{ min-height:80vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .login-card{ background:#fff; border-radius:20px; padding:40px 34px; max-width:440px; width:100%; box-shadow:var(--shadow-lg); }
+  .login-card h2{ font-size:1.5rem; color:var(--navy); margin-bottom:6px; }
+  .login-card .sub{ color:var(--muted); font-size:.85rem; margin-bottom:26px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-size:.78rem; font-weight:700; color:var(--navy); margin-bottom:6px; }
+  .field input, .field select{
+    width:100%; padding:11px 13px; border:1.5px solid var(--line); border-radius:9px; font-size:.9rem; outline:none;
+  }
+  .field input:focus, .field select:focus{ border-color:var(--sky); }
+  .field small{ display:block; color:var(--muted); font-size:.72rem; margin-top:5px; }
+  .btn{ font-weight:700; font-size:.9rem; padding:12px 22px; border-radius:9px; cursor:pointer; border:none; display:inline-flex; align-items:center; gap:8px; transition:.15s; }
+  .btn.primary{ background:var(--orange); color:var(--navy); width:100%; justify-content:center; padding:13px; }
+  .btn.primary:hover{ filter:brightness(1.05); }
+  .btn.danger{ background:#FCE4E9; color:var(--danger); }
+  .btn.ghost{ background:var(--bg); color:var(--navy); border:1px solid var(--line); }
+  .err{ background:#FCE4E9; color:var(--danger); padding:10px 14px; border-radius:9px; font-size:.82rem; font-weight:600; margin-bottom:16px; display:none; }
+  .err.show{display:block;}
+  .help-link{ font-size:.78rem; color:var(--sky); font-weight:700; margin-top:6px; display:inline-block; }
+
+  /* dashboard */
+  .dash{display:none;}
+  .dash.show{display:block;}
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; margin:24px 0 18px; flex-wrap:wrap; gap:12px; }
+  .toolbar h1{ font-size:1.5rem; color:var(--navy); }
+  .toolbar .sub{ color:var(--muted); font-size:.85rem; }
+  .status-pill{ display:inline-flex; align-items:center; gap:6px; font-size:.78rem; font-weight:700; padding:6px 12px; border-radius:999px; background:#E4F6E3; color:var(--green); }
+
+  .table-card{ background:#fff; border-radius:16px; box-shadow:var(--shadow); overflow:hidden; }
+  table{ width:100%; border-collapse:collapse; }
+  th{ text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); padding:14px 16px; border-bottom:2px solid var(--line); }
+  td{ padding:14px 16px; border-bottom:1px solid var(--line); font-size:.87rem; vertical-align:middle; }
+  tr:last-child td{border-bottom:none;}
+  .p-thumb-sm{ width:42px; height:42px; border-radius:8px; background:#FFEFD8; display:flex; align-items:center; justify-content:center; font-size:1.3rem; background-size:cover; background-position:center; }
+  .cat-tag{ font-size:.7rem; font-weight:700; padding:3px 9px; border-radius:6px; background:#E1F4FC; color:#0E7FB0; }
+  .price-cell b{color:var(--navy);}
+  .price-cell .none{color:var(--muted); font-style:italic; font-weight:400;}
+  .row-actions{ display:flex; gap:8px; }
+  .icon-btn{ width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:var(--bg); font-size:.9rem; cursor:pointer; }
+  .icon-btn:hover{background:var(--line);}
+  .empty-row td{ text-align:center; padding:50px 20px; color:var(--muted); }
+
+  /* modal */
+  .overlay{ position:fixed; inset:0; background:rgba(15,27,56,.55); display:none; align-items:center; justify-content:center; z-index:200; padding:20px; }
+  .overlay.show{display:flex;}
+  .modal{ background:#fff; border-radius:18px; padding:30px; max-width:480px; width:100%; max-height:90vh; overflow-y:auto; }
+  .modal h3{ font-size:1.2rem; color:var(--navy); margin-bottom:20px; }
+  .modal-actions{ display:flex; gap:10px; margin-top:22px; }
+  .modal-actions .btn{flex:1; justify-content:center;}
+
+  .fab{ position:fixed; bottom:26px; right:26px; background:var(--pink); color:#fff; width:56px; height:56px; border-radius:50%; font-size:1.6rem; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-lg); cursor:pointer; z-index:50; }
+  .fab:hover{ filter:brightness(1.05); }
+
+  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(120%); background:var(--navy); color:#fff; padding:13px 22px; border-radius:10px; font-weight:700; font-size:.85rem; box-shadow:var(--shadow-lg); z-index:999; transition:transform .25s ease; }
+  .toast.show{ transform:translateX(-50%) translateY(0); }
+
+  @media (max-width:640px){
+    table, thead, tbody, th, td, tr{display:block;}
+    thead{display:none;}
+    tr{ border-bottom:1px solid var(--line); padding:12px 16px; display:grid; grid-template-columns:42px 1fr auto; gap:10px 12px; align-items:center; }
+    td{ border:none; padding:2px 0; }
+    td:nth-child(1){grid-row:1/4;}
+    .row-actions{grid-row:1/4;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="in">
+    <div class="brand">Lookup<span class="dot">!</span><small>Admin Panel</small></div>
+    <button class="logout-btn" id="logoutBtn" style="display:none;">Log out</button>
+  </div>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <h2>Sign in to Admin Panel</h2>
+    <p class="sub">Connects directly to your website's GitHub repository to add, edit or remove products.</p>
+    <div class="err" id="loginErr"></div>
+    <div class="field">
+      <label>GitHub username</label>
+      <input id="ghOwner" type="text" placeholder="e.g. lookupkidswear">
+    </div>
+    <div class="field">
+      <label>Repository name</label>
+      <input id="ghRepo" type="text" placeholder="e.g. lookup-kidswear">
+    </div>
+    <div class="field">
+      <label>Access token</label>
+      <input id="ghToken" type="password" placeholder="ghp_••••••••••••••••">
+      <small>Kept only in this browser tab's memory — never saved or sent anywhere except GitHub. Closing the tab clears it.</small>
+      <a class="help-link" href="#" id="tokenHelpLink">How do I get a token? →</a>
+    </div>
+    <button class="btn primary" id="loginBtn">Sign In</button>
+  </div>
+</div>
+
+<!-- ============ TOKEN HELP MODAL ============ -->
+<div class="overlay" id="helpOverlay">
+  <div class="modal">
+    <h3>Getting a GitHub access token</h3>
+    <div style="font-size:.87rem; line-height:1.7; color:var(--text);">
+      1. Go to <b>github.com/settings/tokens?type=beta</b> (Fine-grained tokens)<br>
+      2. Click <b>Generate new token</b><br>
+      3. Under "Repository access", choose <b>Only select repositories</b> → pick your site's repo<br>
+      4. Under "Permissions" → <b>Repository permissions</b> → set <b>Contents</b> to <b>Read and write</b><br>
+      5. Click <b>Generate token</b> and copy it — paste it into the Access token field here<br>
+      <br>
+      <b>Keep this token private.</b> Don't share this admin page's link publicly, and don't paste the token anywhere else.
+    </div>
+    <div class="modal-actions">
+      <button class="btn primary" id="closeHelp">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div class="dash" id="dash">
+  <div class="wrap">
+    <div class="toolbar">
+      <div>
+        <h1>Products</h1>
+        <p class="sub">Changes save straight to your live website.</p>
+      </div>
+      <span class="status-pill" id="statusPill">● Connected</span>
+    </div>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr><th>Photo</th><th>Product</th><th>Category</th><th>Price</th><th>Badge</th><th></th></tr>
+        </thead>
+        <tbody id="productBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="fab" id="addFab" title="Add product">+</div>
+</div>
+
+<!-- ============ ADD/EDIT MODAL ============ -->
+<div class="overlay" id="formOverlay">
+  <div class="modal">
+    <h3 id="formTitle">Add Product</h3>
+    <div class="field">
+      <label>Product name</label>
+      <input id="f-name" type="text" placeholder="e.g. Denim Jacket Combo">
+    </div>
+    <div class="field">
+      <label>Category</label>
+      <select id="f-cat">
+        <option>Boys</option><option>Girls</option><option>Infant</option><option>Winter</option><option>Party</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Price (₹) — leave blank if not decided yet</label>
+      <input id="f-price" type="number" placeholder="e.g. 899">
+    </div>
+    <div class="field">
+      <label>MRP (₹) — optional, for showing a discount</label>
+      <input id="f-mrp" type="number" placeholder="e.g. 1299">
+    </div>
+    <div class="field">
+      <label>Photo URL — optional</label>
+      <input id="f-image" type="text" placeholder="https://...">
+    </div>
+    <div class="field">
+      <label>Badge — optional</label>
+      <input id="f-badge" type="text" placeholder="e.g. NEW, BESTSELLER">
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="cancelForm">Cancel</button>
+      <button class="btn primary" id="saveForm">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let session = { owner:"", repo:"", token:"" };
+  let products = [];
+  let sha = null;
+  let editingIndex = null;
+
+  const $ = id => document.getElementById(id);
+
+  $('tokenHelpLink').addEventListener('click', e => { e.preventDefault(); $('helpOverlay').classList.add('show'); });
+  $('closeHelp').addEventListener('click', () => $('helpOverlay').classList.remove('show'));
+
+  function showToast(msg, isError){
+    const t = $('toast');
+    t.textContent = msg;
+    t.style.background = isError ? 'var(--danger)' : 'var(--navy)';
+    t.classList.add('show');
+    setTimeout(()=> t.classList.remove('show'), 2500);
+  }
+
+  function utf8ToBase64(str){ return btoa(String.fromCharCode(...new TextEncoder().encode(str))); }
+  function base64ToUtf8(str){ return new TextDecoder().decode(Uint8Array.from(atob(str), c=>c.charCodeAt(0))); }
+
+  async function ghFetch(path, opts={}){
+    const res = await fetch(`https://api.github.com/repos/${session.owner}/${session.repo}/contents/${path}`, {
+      ...opts,
+      headers:{
+        'Authorization': `token ${session.token}`,
+        'Accept': 'application/vnd.github+json',
+        ...(opts.headers||{})
+      }
+    });
+    if(!res.ok){
+      const body = await res.json().catch(()=>({}));
+      throw new Error(body.message || `GitHub error ${res.status}`);
+    }
+    return res.json();
+  }
+
+  $('loginBtn').addEventListener('click', async () => {
+    const owner = $('ghOwner').value.trim();
+    const repo = $('ghRepo').value.trim();
+    const token = $('ghToken').value.trim();
+    const err = $('loginErr');
+    err.classList.remove('show');
+
+    if(!owner || !repo || !token){
+      err.textContent = "Please fill in all three fields.";
+      err.classList.add('show');
+      return;
+    }
+
+    session = { owner, repo, token };
+    $('loginBtn').textContent = "Connecting...";
+
+    try{
+      const data = await ghFetch('products.json');
+      sha = data.sha;
+      products = JSON.parse(base64ToUtf8(data.content));
+      $('loginScreen').style.display = 'none';
+      $('dash').classList.add('show');
+      $('logoutBtn').style.display = 'inline-flex';
+      renderTable();
+    }catch(e){
+      err.textContent = "Couldn't connect: " + e.message + " — check your username, repo name and token.";
+      err.classList.add('show');
+      $('loginBtn').textContent = "Sign In";
+    }
+  });
+
+  $('logoutBtn').addEventListener('click', () => {
+    session = { owner:"", repo:"", token:"" };
+    products = []; sha = null;
+    $('dash').classList.remove('show');
+    $('loginScreen').style.display = 'flex';
+    $('logoutBtn').style.display = 'none';
+    $('ghToken').value = '';
+  });
+
+  function renderTable(){
+    const body = $('productBody');
+    body.innerHTML = "";
+    if(products.length === 0){
+      body.innerHTML = `<tr class="empty-row"><td colspan="6">No products yet — tap the + button to add your first one.</td></tr>`;
+      return;
+    }
+    products.forEach((p, i) => {
+      const hasPrice = p.price !== undefined && p.price !== null && p.price !== "";
+      const thumbBg = p.image ? `background-image:url('${p.image}')` : '';
+      const icons = { Boys:"👕", Girls:"👗", Infant:"🍼", Winter:"🧥", Party:"🎉" };
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><div class="p-thumb-sm" style="${thumbBg}">${!p.image ? (icons[p.category]||"👶") : ""}</div></td>
+        <td><b>${p.name || "Untitled"}</b></td>
+        <td><span class="cat-tag">${p.category || "-"}</span></td>
+        <td class="price-cell">${hasPrice ? `<b>₹${p.price}</b>` : `<span class="none">Coming soon</span>`}</td>
+        <td>${p.badge || ""}</td>
+        <td>
+          <div class="row-actions">
+            <div class="icon-btn" data-edit="${i}" title="Edit">✏️</div>
+            <div class="icon-btn" data-del="${i}" title="Delete">🗑️</div>
+          </div>
+        </td>
+      `;
+      body.appendChild(tr);
+    });
+
+    body.querySelectorAll('[data-edit]').forEach(btn=>{
+      btn.addEventListener('click', () => openForm(parseInt(btn.dataset.edit)));
+    });
+    body.querySelectorAll('[data-del]').forEach(btn=>{
+      btn.addEventListener('click', () => deleteProduct(parseInt(btn.dataset.del)));
+    });
+  }
+
+  function openForm(index){
+    editingIndex = index;
+    const isEdit = index !== null;
+    $('formTitle').textContent = isEdit ? "Edit Product" : "Add Product";
+    const p = isEdit ? products[index] : { name:"", category:"Boys", price:"", mrp:"", image:"", badge:"" };
+    $('f-name').value = p.name || "";
+    $('f-cat').value = p.category || "Boys";
+    $('f-price').value = p.price ?? "";
+    $('f-mrp').value = p.mrp ?? "";
+    $('f-image').value = p.image || "";
+    $('f-badge').value = p.badge || "";
+    $('formOverlay').classList.add('show');
+  }
+
+  $('addFab').addEventListener('click', () => openForm(null));
+  $('cancelForm').addEventListener('click', () => $('formOverlay').classList.remove('show'));
+
+  $('saveForm').addEventListener('click', async () => {
+    const newProduct = {
+      name: $('f-name').value.trim(),
+      category: $('f-cat').value,
+      price: $('f-price').value === "" ? "" : Number($('f-price').value),
+      mrp: $('f-mrp').value === "" ? "" : Number($('f-mrp').value),
+      image: $('f-image').value.trim(),
+      badge: $('f-badge').value.trim()
+    };
+    if(!newProduct.name){
+      showToast("Please enter a product name.", true);
+      return;
+    }
+    if(editingIndex === null){
+      products.push(newProduct);
+    }else{
+      products[editingIndex] = newProduct;
+    }
+    $('formOverlay').classList.remove('show');
+    await saveToGitHub("Update products.json via admin panel");
+    renderTable();
+  });
+
+  async function deleteProduct(index){
+    if(!confirm(`Delete "${products[index].name}"?`)) return;
+    products.splice(index, 1);
+    await saveToGitHub("Delete product via admin panel");
+    renderTable();
+  }
+
+  async function saveToGitHub(message){
+    $('statusPill').textContent = "● Saving...";
+    $('statusPill').style.background = '#FFF3CD';
+    $('statusPill').style.color = '#8A6D00';
+    try{
+      const content = utf8ToBase64(JSON.stringify(products, null, 2));
+      const result = await ghFetch('products.json', {
+        method: 'PUT',
+        body: JSON.stringify({ message, content, sha })
+      });
+      sha = result.content.sha;
+      $('statusPill').textContent = "● Connected";
+      $('statusPill').style.background = '#E4F6E3';
+      $('statusPill').style.color = 'var(--green)';
+      showToast("Saved — your live site will update shortly.");
+    }catch(e){
+      $('statusPill').textContent = "● Save failed";
+      $('statusPill').style.background = '#FCE4E9';
+      $('statusPill').style.color = 'var(--danger)';
+      showToast("Save failed: " + e.message, true);
+    }
+  }
+</script>
+
+</body>
+</html>
